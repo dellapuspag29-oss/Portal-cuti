@@ -1,0 +1,175 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+:root {
+    --portal-ink: #243447;
+    --portal-muted: #667085;
+    --portal-line: #e5e7eb;
+    --portal-surface: #ffffff;
+    --portal-bg: #f5f7fa;
+    --portal-accent: #356859;
+    --portal-accent-soft: #e7f1ed;
+}
+
+body.portal-page {
+    min-height: 100vh;
+    color: var(--portal-ink);
+    background: var(--portal-bg);
+}
+
+.admin-login {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 12% 12%, rgba(53, 104, 89, 0.14), transparent 30%),
+        linear-gradient(135deg, #f5f7fa 0%, #edf4f0 100%);
+}
+
+.admin-login-mark {
+    display: grid;
+    width: 56px;
+    height: 56px;
+    place-items: center;
+    color: #ffffff;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    border-radius: 16px;
+    background: var(--portal-accent);
+    box-shadow: 0 10px 20px rgba(53, 104, 89, 0.2);
+}
+
+.portal-login-link {
+    color: var(--portal-accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.portal-login-link:hover {
+    color: #2b5548;
+    text-decoration: underline;
+}
+
+.portal-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.portal-card {
+    border: 1px solid var(--portal-line);
+    border-radius: 14px;
+    background: var(--portal-surface);
+    box-shadow: 0 8px 24px rgba(36, 52, 71, 0.06);
+}
+
+.portal-card-header {
+    border-bottom: 1px solid var(--portal-line);
+    background: transparent;
+}
+
+.portal-eyebrow {
+    color: var(--portal-accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.portal-muted {
+    color: var(--portal-muted);
+}
+
+.portal-page .form-control,
+.portal-page .form-select {
+    border-color: #d8dee6;
+    border-radius: 9px;
+    padding: 0.7rem 0.85rem;
+}
+
+.portal-page .form-control:focus,
+.portal-page .form-select:focus {
+    border-color: var(--portal-accent);
+    box-shadow: 0 0 0 0.2rem rgba(53, 104, 89, 0.13);
+}
+
+.portal-page .btn-primary,
+.portal-page .btn-success {
+    border-color: var(--portal-accent);
+    background: var(--portal-accent);
+}
+
+.portal-page .btn-primary:hover,
+.portal-page .btn-success:hover {
+    border-color: #2b5548;
+    background: #2b5548;
+}
+
+.portal-page .btn-outline-secondary {
+    color: var(--portal-ink);
+    border-color: #cbd5df;
+}
+
+.portal-page .btn-outline-secondary:hover {
+    color: var(--portal-ink);
+    background: #eef2f5;
+    border-color: #b8c3cf;
+}
+
+.portal-table th {
+    color: var(--portal-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.portal-table td {
+    min-width: 110px;
+    color: #344054;
+}
+
+.portal-table td:first-child {
+    min-width: 44px;
+}
+
+.portal-status {
+    border-radius: 999px;
+    font-weight: 600;
+    padding: 0.45rem 0.7rem;
+}
+
+.portal-status-pending {
+    color: #8a5b12;
+    background: #fff4d6;
+}
+
+.portal-status-approved {
+    color: #276749;
+    background: #e4f3ea;
+}
+
+.portal-status-rejected {
+    color: #a13b3b;
+    background: #fbe9e9;
+}
+
+.portal-search-result {
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 575.98px) {
+    .portal-page .btn {
+        min-height: 44px;
+    }
+
+    .portal-table {
+        min-width: 760px;
+    }
+}
