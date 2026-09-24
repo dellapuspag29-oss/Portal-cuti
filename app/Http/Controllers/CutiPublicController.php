@@ -50,8 +50,19 @@ class CutiPublicController extends Controller
         }
 
         $pathLampiran = null;
+
         if ($request->hasFile('lampiran')) {
-            $pathLampiran = $request->file('lampiran')->store('lampiran_cuti');
+            $file = $request->file('lampiran');
+
+            $namaFile = 'lampiran_cuti/' . uniqid() . '_' . $file->getClientOriginalName();
+
+            Storage::disk('s3')->put(
+                $namaFile,
+                file_get_contents($file->getRealPath()),
+                'private'
+            );
+
+            $pathLampiran = $namaFile;
         }
 
         $pegawai = User::whereNotNull('nip')
@@ -148,16 +159,19 @@ class CutiPublicController extends Controller
         return redirect()->back()->with('success', 'Status pengajuan berhasil diperbarui!');
     }
 
-    public function downloadAttachment(Cuti $cuti): BinaryFileResponse
-    {
-        abort_unless($cuti->lampiran && Storage::disk('local')->exists($cuti->lampiran), 404);
+    public function downloadAttachment(Cuti $cuti)
+{
+    abort_unless(
+        $cuti->lampiran &&
+        Storage::disk('s3')->exists($cuti->lampiran),
+        404
+    );
 
-        return response()->file(
-            Storage::disk('local')->path($cuti->lampiran),
-            [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="'.basename($cuti->lampiran).'"',
-            ],
-        );
-    }
+    $file = Storage::disk('s3')->get($cuti->lampiran);
+
+    return response($file, 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="' . basename($cuti->lampiran) . '"',
+    ]);
+}
 }
