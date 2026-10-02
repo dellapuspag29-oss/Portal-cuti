@@ -19,7 +19,6 @@
                     <small class="text-muted d-block fs-7" style="margin-top: -3px;">Portal Pengajuan Cuti</small>
                 </div>
             </a>
-            <a href="{{ route('admin.login') }}" class="btn btn-outline-primary btn-sm fw-semibold">Masuk Admin</a>
         </div>
     </header>
 
