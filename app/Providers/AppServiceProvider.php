@@ -2,12 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Ratelimiter;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,21 +28,19 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        // Rate Limiter untuk Pengajuan Cuti Public
+        RateLimiter::for('cuti-submit', function (Request $request) {
+            return Limit::perMinute(5)->by($request->ip());
+        });
+
         // Rate Limiter untuk Admin Login
         RateLimiter::for('admin-login', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());
         });
 
-        // Rate Limiter untuk Cek Status Cuti (Menghilangkan Error MissingRateLimiterException)
+        // Rate Limiter untuk Cek Status Cuti
         RateLimiter::for('status-check', function (Request $request) {
             return Limit::perMinute(10)->by($request->ip());
-        });
-    }
-
-    public function boot(): void
-    {
-        RateLimiter::for('cuti-submit', function (Request $request) {
-            return Limit::perMinute(5)->by($request->ip());
         });
     }
 }
