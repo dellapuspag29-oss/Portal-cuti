@@ -23,14 +23,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Paksa protokol HTTPS di Vercel/Production
+        // Force Scheme HTTPS untuk Vercel / Production
         if (config('app.env') !== 'local' || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
             URL::forceScheme('https');
         }
 
-        // Daftarkan Rate Limiter admin-login yang hilang
+        // Rate Limiter untuk Admin Login
         RateLimiter::for('admin-login', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());
+        });
+
+        // Rate Limiter untuk Cek Status Cuti (Menghilangkan Error MissingRateLimiterException)
+        RateLimiter::for('status-check', function (Request $request) {
+            return Limit::perMinute(10)->by($request->ip());
         });
     }
 }
