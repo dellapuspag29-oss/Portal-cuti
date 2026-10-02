@@ -1,6 +1,11 @@
 <?php
 
-// Buat folder storage dan bootstrap cache secara otomatis jika belum ada di Vercel
+// Forward request static assets
+if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js|ico|svg)$/', $_SERVER["REQUEST_URI"])) {
+    return false;
+}
+
+// Menyiapkan direktori penyimpanan sementara di Vercel
 $storageDirs = [
     '/tmp/storage/app',
     '/tmp/storage/framework/cache',
@@ -16,11 +21,12 @@ foreach ($storageDirs as $dir) {
     }
 }
 
-// Redirect path storage dan bootstrap cache Laravel ke folder /tmp
-$_ENV['APP_SERVICES_CACHE'] = '/tmp/bootstrap/cache/services.php';
-$_ENV['APP_PACKAGES_CACHE'] = '/tmp/bootstrap/cache/packages.php';
-$_ENV['APP_CONFIG_CACHE']   = '/tmp/bootstrap/cache/config.php';
-$_ENV['APP_ROUTES_CACHE']   = '/tmp/bootstrap/cache/routes.php';
-$_ENV['APP_EVENTS_CACHE']   = '/tmp/bootstrap/cache/events.php';
+// Set environment variable untuk cache Vercel
+putenv('APP_SERVICES_CACHE=/tmp/bootstrap/cache/services.php');
+putenv('APP_PACKAGES_CACHE=/tmp/bootstrap/cache/packages.php');
+putenv('APP_CONFIG_CACHE=/tmp/bootstrap/cache/config.php');
+putenv('APP_ROUTES_CACHE=/tmp/bootstrap/cache/routes.php');
+putenv('APP_EVENTS_CACHE=/tmp/bootstrap/cache/events.php');
 
+// Memanggil entrypoint public/index.php Laravel
 require __DIR__ . '/../public/index.php';
