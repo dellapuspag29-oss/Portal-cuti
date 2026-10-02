@@ -10,10 +10,13 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_the_application_redirects_to_the_public_leave_form(): void
+    public function test_the_homepage_shows_welcome_and_links_to_leave_actions(): void
     {
         $response = $this->get('/');
 
-        $response->assertRedirectToRoute('cuti.public.create');
+        $response->assertSee('Selamat datang');
+        $response->assertSee('Mulai pengajuan');
+        $response->assertSee(route('cuti.public.create'));
+        $response->assertSee(route('cuti.public.status'));
     }
 }

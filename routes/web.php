@@ -5,7 +5,7 @@ use App\Http\Controllers\CutiPublicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('cuti.public.create');
+    return view('cuti.welcome');
 });
 
 // Route Pengajuan Cuti (Publik)
