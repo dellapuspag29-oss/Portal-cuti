@@ -160,18 +160,14 @@ class CutiPublicController extends Controller
     }
 
     public function downloadAttachment(Cuti $cuti)
-{
-    abort_unless(
-        $cuti->lampiran &&
-        Storage::disk('s3')->exists($cuti->lampiran),
-        404
-    );
+    {
+        if (!$cuti->lampiran) {
+            return back()->with('error', 'File lampiran tidak ditemukan.');
+        }
 
-    $file = Storage::disk('s3')->get($cuti->lampiran);
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk('s3');
 
-    return response($file, 200, [
-        'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'inline; filename="' . basename($cuti->lampiran) . '"',
-    ]);
-}
+        return redirect()->away($disk->url($cuti->lampiran));
+    }
 }
