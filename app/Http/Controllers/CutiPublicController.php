@@ -165,14 +165,17 @@ class CutiPublicController extends Controller
             return back()->with('error', 'File lampiran tidak ditemukan.');
         }
 
-        // Ambil URL/Endpoint dasar dari config S3 / Env
-        $endpoint = rtrim(config('filesystems.disks.s3.endpoint'), '/');
-        $bucket = config('filesystems.disks.s3.bucket');
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk('s3');
 
-        // Supabase Public Storage URL Format:
-        // {ENDPOINT}/object/public/{BUCKET}/{FILE_PATH}
-        $publicUrl = sprintf('%s/object/public/%s/%s', $endpoint, $bucket, ltrim($cuti->lampiran, '/'));
+        // Mengambil isi binary file langsung dari S3 Supabase
+        $fileContent = $disk->get($cuti->lampiran);
+        $mimeType = $disk->mimeType($cuti->lampiran) ?? 'application/pdf';
 
-        return redirect()->away($publicUrl);
+        // Mengirimkan response download/inline langsung ke browser user
+        return response($fileContent, 200, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . basename($cuti->lampiran) . '"',
+        ]);
     }
 }
