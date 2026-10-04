@@ -168,6 +168,12 @@ class CutiPublicController extends Controller
         /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
         $disk = Storage::disk('s3');
 
-        return redirect()->away($disk->url($cuti->lampiran));
+        // Membuat URL sementara bertanda tangan yang berlaku selama 5 menit
+        $temporaryUrl = $disk->temporaryUrl(
+            $cuti->lampiran,
+            now()->addMinutes(5)
+        );
+
+        return redirect()->away($temporaryUrl);
     }
 }
