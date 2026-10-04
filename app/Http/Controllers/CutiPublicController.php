@@ -168,12 +168,14 @@ class CutiPublicController extends Controller
         /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
         $disk = Storage::disk('s3');
 
-        // Membuat URL sementara bertanda tangan yang berlaku selama 5 menit
-        $temporaryUrl = $disk->temporaryUrl(
-            $cuti->lampiran,
-            now()->addMinutes(5)
-        );
+        // Mengambil isi binary file langsung dari S3 Supabase
+        $fileContent = $disk->get($cuti->lampiran);
+        $mimeType = $disk->mimeType($cuti->lampiran) ?? 'application/pdf';
 
-        return redirect()->away($temporaryUrl);
+        // Mengirimkan response download/inline langsung ke browser user
+        return response($fileContent, 200, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . basename($cuti->lampiran) . '"',
+        ]);
     }
 }
