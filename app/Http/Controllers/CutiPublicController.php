@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CutiPublicController extends Controller
 {
@@ -53,13 +52,11 @@ class CutiPublicController extends Controller
 
         if ($request->hasFile('lampiran')) {
             $file = $request->file('lampiran');
-
             $namaFile = 'lampiran_cuti/' . uniqid() . '_' . $file->getClientOriginalName();
 
             Storage::disk('s3')->put(
                 $namaFile,
-                file_get_contents($file->getRealPath()),
-                'private'
+                file_get_contents($file->getRealPath())
             );
 
             $pathLampiran = $namaFile;
@@ -118,7 +115,7 @@ class CutiPublicController extends Controller
                 0,
                 0,
                 0,
-                config('app.timezone'),
+                config('app.timezone')
             );
             $periodEnd = $periodStart->copy()->addMonth();
 
@@ -142,7 +139,7 @@ class CutiPublicController extends Controller
 
         return Excel::download(
             new CutiExport($validated['bulan'], $validated['tahun']),
-            $filename,
+            $filename
         );
     }
 
@@ -165,17 +162,11 @@ class CutiPublicController extends Controller
             return back()->with('error', 'File lampiran tidak ditemukan.');
         }
 
-        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
-        $disk = Storage::disk('s3');
+        $endpoint = rtrim(config('filesystems.disks.s3.endpoint'), '/');
+        $bucket = config('filesystems.disks.s3.bucket');
 
-        // Mengambil isi binary file langsung dari S3 Supabase
-        $fileContent = $disk->get($cuti->lampiran);
-        $mimeType = $disk->mimeType($cuti->lampiran) ?? 'application/pdf';
+        $publicUrl = sprintf('%s/object/public/%s/%s', $endpoint, $bucket, ltrim($cuti->lampiran, '/'));
 
-        // Mengirimkan response download/inline langsung ke browser user
-        return response($fileContent, 200, [
-            'Content-Type' => $mimeType,
-            'Content-Disposition' => 'inline; filename="' . basename($cuti->lampiran) . '"',
-        ]);
+        return redirect()->away($publicUrl);
     }
 }
