@@ -14,6 +14,9 @@ Route::post('/pengajuan-cuti', [CutiPublicController::class, 'store'])->middlewa
 
 // Route Cek Status Cuti (Publik)
 Route::get('/cek-status-cuti', [CutiPublicController::class, 'cekStatus'])->middleware('throttle:status-check')->name('cuti.public.status');
+Route::get('/cek-status-cuti/{cuti}/lampiran', [CutiPublicController::class, 'downloadAttachment'])
+    ->middleware('signed')
+    ->name('cuti.public.attachment');
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->middleware('throttle:admin-login')->name('admin.login.store');

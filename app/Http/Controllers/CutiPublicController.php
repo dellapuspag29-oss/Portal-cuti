@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CutiPublicController extends Controller
@@ -51,15 +52,7 @@ class CutiPublicController extends Controller
         $pathLampiran = null;
 
         if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $namaFile = 'lampiran_cuti/' . uniqid() . '_' . $file->getClientOriginalName();
-
-            Storage::disk('s3')->put(
-                $namaFile,
-                file_get_contents($file->getRealPath())
-            );
-
-            $pathLampiran = $namaFile;
+            $pathLampiran = $request->file('lampiran')->store('lampiran_cuti');
         }
 
         $pegawai = User::whereNotNull('nip')
@@ -99,7 +92,17 @@ class CutiPublicController extends Controller
                 ->get();
         }
 
-        return view('cuti.status', compact('riwayatCuti', 'nipSearched'));
+        $attachmentUrls = $riwayatCuti
+            ->filter(fn (Cuti $cuti): bool => filled($cuti->lampiran))
+            ->mapWithKeys(fn (Cuti $cuti): array => [
+                $cuti->getKey() => URL::temporarySignedRoute(
+                    'cuti.public.attachment',
+                    now()->addMinutes(30),
+                    ['cuti' => $cuti],
+                ),
+            ]);
+
+        return view('cuti.status', compact('riwayatCuti', 'nipSearched', 'attachmentUrls'));
     }
 
     // Rekap Data Admin (Filter Per Bulan)
@@ -157,15 +160,16 @@ class CutiPublicController extends Controller
     }
 
     public function downloadAttachment(Cuti $cuti)
-{
-        if (!$cuti->lampiran) {
+    {
+        if (! $cuti->lampiran) {
             return back()->with('error', 'File lampiran tidak ditemukan.');
         }
 
         // Buat Signed URL sementara yang berlaku selama 30 menit
-        $url = Storage::disk('s3')->temporaryUrl(
+        $url = Storage::disk(config('filesystems.default'))->temporaryUrl(
             $cuti->lampiran,
-            now()->addMinutes(30)
+            now()->addMinutes(30),
+            ['ResponseContentDisposition' => 'inline']
         );
 
         return redirect()->away($url);

@@ -138,6 +138,20 @@ body.portal-page {
     min-width: 44px;
 }
 
+.cuti-admin-actions {
+    position: sticky;
+    right: 0;
+    z-index: 1;
+    min-width: 170px !important;
+    white-space: nowrap;
+    background: var(--portal-surface);
+    box-shadow: -8px 0 12px -12px rgba(36, 52, 71, 0.5);
+}
+
+.cuti-admin-actions-header {
+    z-index: 2;
+}
+
 .portal-status {
     border-radius: 999px;
     font-weight: 600;

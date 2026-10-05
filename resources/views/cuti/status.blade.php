@@ -50,12 +50,14 @@
                                             <th>Unit Kerja</th>
                                             <th>Tanggal Cuti</th>
                                             <th>Status</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse($riwayatCuti as $item)
                                             <tr>
                                                 <td>{{ $item->created_at->format('d M Y') }}</td>
+                                                <td>{{ $item->nama_karyawan }}</td>
                                                 <td><span class="badge rounded-pill text-bg-light border">{{ $item->kategori_cuti }}</span></td>
                                                 <td>{{ $item->unit_kerja ?? '-' }}</td>
                                                 <td>{{ $item->tanggal_mulai }} s/d {{ $item->tanggal_selesai }}</td>
@@ -68,10 +70,17 @@
                                                         <span class="badge portal-status portal-status-rejected">Ditolak</span>
                                                     @endif
                                                 </td>
+                                                <td>
+                                                    @if(isset($attachmentUrls[$item->id]))
+                                                        <a href="{{ $attachmentUrls[$item->id] }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary">Lihat Lampiran</a>
+                                                    @else
+                                                        <span class="text-muted">-</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="5" class="text-center text-muted">Tidak ada pengajuan cuti ditemukan untuk NIP ini.</td>
+                                                <td colspan="7" class="text-center text-muted">Tidak ada pengajuan cuti ditemukan untuk NIP ini.</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

@@ -75,7 +75,7 @@
                                 <th>Alasan</th>
                                 <th>Lampiran</th>
                                 <th>Status</th>
-                                <th>Aksi Approval</th>
+                                <th class="cuti-admin-actions cuti-admin-actions-header">Aksi Approval</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -110,7 +110,7 @@
                                             <span class="badge portal-status portal-status-rejected">Ditolak</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="cuti-admin-actions">
                                         <div class="d-flex flex-column flex-lg-row gap-2">
                                             {{-- Tombol Approve --}}
                                             <form action="{{ route('cuti.admin.updateStatus', $item->id) }}" method="POST">
