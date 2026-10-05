@@ -74,8 +74,7 @@
                                 <th>Tanggal</th>
                                 <th>Alasan</th>
                                 <th>Lampiran</th>
-                                <th>Status</th>
-                                <th class="cuti-admin-actions cuti-admin-actions-header">Aksi Approval</th>
+                                <th class="text-center">Aksi Approval</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -88,56 +87,50 @@
                                     <td>{{ $item->jabatan }}</td>
                                     <td>{{ $item->unit_kerja ?? '-' }}</td>
                                     <td><span class="badge rounded-pill text-bg-light border">{{ $item->kategori_cuti }}</span></td>
-                                    <td>
-                                        <small>
-                                            {{ $item->tanggal_mulai }} s/d <br> {{ $item->tanggal_selesai }}
-                                        </small>
-                                    </td>
-                                    <td>{{ $item->alasan }}</td>
-                                    <td>
-                                        @if($item->lampiran)
-                                            <a href="{{ route('cuti.admin.attachment', $item) }}" target="_blank" class="btn btn-sm btn-outline-secondary">Lihat Lampiran</a>
-                                        @else
-                                            <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($item->status == 'Pending')
-                                            <span class="badge portal-status portal-status-pending">Pending</span>
-                                        @elseif($item->status == 'Disetujui')
-                                            <span class="badge portal-status portal-status-approved">Disetujui</span>
-                                        @else
-                                            <span class="badge portal-status portal-status-rejected">Ditolak</span>
-                                        @endif
-                                    </td>
-                                    <td class="cuti-admin-actions">
-                                        <div class="d-flex flex-column flex-lg-row gap-2">
-                                            {{-- Tombol Approve --}}
-                                            <form action="{{ route('cuti.admin.updateStatus', $item->id) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status" value="Disetujui">
-                                                <button type="submit" class="btn btn-sm btn-success px-3" {{ $item->status == 'Disetujui' ? 'disabled' : '' }}>Setujui</button>
-                                            </form>
-
-                                            {{-- Tombol Reject --}}
-                                            <form action="{{ route('cuti.admin.updateStatus', $item->id) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status" value="Ditolak">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger px-3" {{ $item->status == 'Ditolak' ? 'disabled' : '' }}>Tolak</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="12" class="text-center text-muted">Belum ada pengajuan cuti yang masuk.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                    <td>
+                        <small>
+                            {{ $item->tanggal_mulai }} s/d <br> {{ $item->tanggal_selesai }}
+                        </small>
+                    </td>
+                    <td>{{ $item->alasan }}</td>
+                    <td>
+                        @if($item->lampiran)
+                            <a href="{{ route('cuti.admin.attachment', $item) }}" target="_blank" class="btn btn-sm btn-outline-secondary">Lihat Lampiran</a>
+                        @else
+                            <span class="text-muted">-</span>
+                        @endif
+                    </td>
+                    <td class="text-center">
+                        @if($item->status == 'Pending' || empty($item->status))
+                            <div class="d-flex justify-content-center gap-1">
+                                <form action="{{ route('cuti.admin.updateStatus', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="Disetujui">
+                                    <button type="submit" class="btn btn-sm btn-success px-3">Setujui</button>
+                                </form>
+                                <form action="{{ route('cuti.admin.updateStatus', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="Ditolak">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger px-3">Tolak</button>
+                                </form>
+                            </div>
+                        @elseif($item->status == 'Disetujui')
+                            <span class="badge portal-status portal-status-approved">Disetujui</span>
+                        @else
+                            <span class="badge portal-status portal-status-rejected">Ditolak</span>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="11" class="text-center text-muted">Belum ada pengajuan cuti yang masuk.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
                 </div>
             </div>
