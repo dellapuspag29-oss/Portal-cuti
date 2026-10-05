@@ -27,8 +27,7 @@
         <div class="row justify-content-center text-center">
             <div class="col-lg-8">
                 <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2 rounded-pill mb-3">Layanan Pengajuan Cuti Online</span>
-                <h1 class="display-5 fw-bold text-dark mb-3">Selamat datang di Portal Pengajuan Cuti</h1>
-                <p class="lead text-secondary mb-4">Ajukan cuti kerja dan cek status persetujuan secara cepat, mandiri, dan efisien.</p>
+                <h1 class="display-5 fw-bold text-dark mb-3">Selamat datang di Portal Pengajuan Cuti Dinas Lingkungan Hidup</h1>
                 
                 <div class="d-flex flex-wrap gap-3 justify-content-center">
                     <a href="{{ route('cuti.public.create') }}" class="btn btn-primary btn-lg px-4 fw-semibold shadow-sm">Mulai Pengajuan Cuti</a>
