@@ -24,7 +24,7 @@
                         <form action="{{ route('cuti.public.status') }}" method="GET" class="row g-3 align-items-end">
                             <div class="col-md-9">
                                 <label for="nip_search" class="form-label fw-semibold">Nomor Induk Pegawai (NIP)</label>
-                                <input type="text" id="nip_search" name="nip" class="form-control" placeholder="Masukkan NIP Anda..." value="{{ $nipSearched }}" required>
+                                <input type="text" id="nip_search" name="nip" class="form-control" placeholder="Masukkan NIP Anda..." value="{{ $nipSearched ?? '' }}" required>
                             </div>
                             <div class="col-md-3">
                                 <button type="submit" class="btn btn-primary w-100 fw-semibold">Cari Pengajuan</button>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
 
-                @if($nipSearched)
+                @if(!empty($nipSearched))
                     <div class="portal-card overflow-hidden">
                         <div class="portal-card-header p-3 p-lg-4">
                             <div class="portal-eyebrow mb-2">Hasil pencarian</div>
@@ -55,18 +55,25 @@
                                     <tbody>
                                         @forelse($riwayatCuti as $item)
                                             <tr>
-                                                <td>{{ $item->created_at->format('d M Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}</td>
                                                 <td>{{ $item->nama_karyawan }}</td>
                                                 <td><span class="badge rounded-pill text-bg-light border">{{ $item->kategori_cuti }}</span></td>
                                                 <td>{{ $item->unit_kerja ?? '-' }}</td>
-                                                <td>{{ $item->tanggal_mulai }} s/d {{ $item->tanggal_selesai }}</td>
                                                 <td>
-                                                    @if($item->status == 'Pending')
-                                                        <span class="badge portal-status portal-status-pending">Pending</span>
+                                                    <small>
+                                                        {{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }} s/d <br>
+                                                        {{ \Carbon\Carbon::parse($item->tanggal_selesai)->format('d/m/Y') }}
+                                                    </small>
+                                                </td>
+                                                <td>
+                                                    @if($item->status == 'Pending' || empty($item->status))
+                                                        <span class="badge bg-warning text-dark px-2 py-1">Pending</span>
                                                     @elseif($item->status == 'Disetujui')
-                                                        <span class="badge portal-status portal-status-approved">Disetujui</span>
+                                                        <span class="badge bg-success px-2 py-1">Disetujui</span>
+                                                    @elseif($item->status == 'Ditolak')
+                                                        <span class="badge bg-danger px-2 py-1">Ditolak</span>
                                                     @else
-                                                        <span class="badge portal-status portal-status-rejected">Ditolak</span>
+                                                        <span class="badge bg-secondary px-2 py-1">{{ $item->status }}</span>
                                                     @endif
                                                 </td>
                                             </tr>
