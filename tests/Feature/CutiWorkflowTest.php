@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class CutiWorkflowTest extends TestCase
@@ -16,7 +15,6 @@ class CutiWorkflowTest extends TestCase
 
     public function test_public_submission_saves_the_attachment_to_storage(): void
     {
-        config(['filesystems.default' => 's3']);
         Storage::fake('s3');
         $pegawai = User::factory()->create([
             'nip' => '123456789',
@@ -40,9 +38,8 @@ class CutiWorkflowTest extends TestCase
         Storage::disk('s3')->assertExists($cuti->lampiran);
     }
 
-    public function test_status_page_shows_aligned_applicant_details_and_a_signed_attachment_link(): void
+    public function test_status_page_shows_final_decision_without_a_public_attachment_link(): void
     {
-        $this->freezeTime();
         $cuti = Cuti::create([
             'nip' => '123456789',
             'nama_karyawan' => 'Pegawai Test',
@@ -54,25 +51,34 @@ class CutiWorkflowTest extends TestCase
             'alamat' => 'Alamat test',
             'nomor_telepon' => '08123456789',
             'lampiran' => 'lampiran_cuti/surat.pdf',
+            'status' => 'Disetujui',
         ]);
-        $attachmentUrl = URL::temporarySignedRoute(
-            'cuti.public.attachment',
-            now()->addMinutes(30),
-            ['cuti' => $cuti],
-        );
+        Cuti::create([
+            'nip' => '123456789',
+            'nama_karyawan' => 'Pegawai Test',
+            'jabatan' => 'Staf',
+            'kategori_cuti' => 'Cuti Sakit',
+            'tanggal_mulai' => '2026-10-08',
+            'tanggal_selesai' => '2026-10-09',
+            'alasan' => 'Sakit',
+            'alamat' => 'Alamat test',
+            'nomor_telepon' => '08123456789',
+            'status' => 'Ditolak',
+        ]);
 
         $response = $this->get(route('cuti.public.status', ['nip' => $cuti->nip]));
 
         $response->assertSee('Pegawai Test');
         $response->assertSee('Cuti Tahunan');
-        $response->assertSee('Lihat Lampiran');
-        $response->assertSee($attachmentUrl);
+        $response->assertSee('Disetujui');
+        $response->assertSee('Ditolak');
+        $response->assertDontSee('Lihat Lampiran');
     }
 
-    public function test_signed_attachment_link_redirects_to_the_stored_pdf(): void
+    public function test_admin_attachment_link_redirects_to_the_stored_pdf(): void
     {
-        config(['filesystems.default' => 's3']);
         Storage::fake('s3');
+        $admin = User::factory()->create(['is_admin' => true]);
         $cuti = Cuti::create([
             'nip' => '123456789',
             'nama_karyawan' => 'Pegawai Test',
@@ -87,13 +93,29 @@ class CutiWorkflowTest extends TestCase
         ]);
         Storage::disk('s3')->put($cuti->lampiran, '%PDF-1.4 test');
 
-        $response = $this->get(URL::temporarySignedRoute(
-            'cuti.public.attachment',
-            now()->addMinutes(30),
-            ['cuti' => $cuti],
-        ));
+        $response = $this->actingAs($admin)->get(route('cuti.admin.attachment', $cuti));
 
         $response->assertRedirect();
+    }
+
+    public function test_public_users_cannot_access_the_admin_attachment_route(): void
+    {
+        $cuti = Cuti::create([
+            'nip' => '123456789',
+            'nama_karyawan' => 'Pegawai Test',
+            'jabatan' => 'Staf',
+            'kategori_cuti' => 'Cuti Tahunan',
+            'tanggal_mulai' => '2026-10-06',
+            'tanggal_selesai' => '2026-10-07',
+            'alasan' => 'Keperluan keluarga',
+            'alamat' => 'Alamat test',
+            'nomor_telepon' => '08123456789',
+            'lampiran' => 'lampiran_cuti/surat.pdf',
+        ]);
+
+        $response = $this->get(route('cuti.admin.attachment', $cuti));
+
+        $response->assertRedirectToRoute('admin.login');
     }
 
     public function test_admin_can_see_and_update_pending_approval_actions(): void

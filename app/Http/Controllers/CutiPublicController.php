@@ -6,9 +6,9 @@ use App\Exports\CutiExport;
 use App\Models\Cuti;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CutiPublicController extends Controller
@@ -52,7 +52,7 @@ class CutiPublicController extends Controller
         $pathLampiran = null;
 
         if ($request->hasFile('lampiran')) {
-            $pathLampiran = $request->file('lampiran')->store('lampiran_cuti');
+            $pathLampiran = $request->file('lampiran')->store('lampiran_cuti', 's3');
         }
 
         $pegawai = User::whereNotNull('nip')
@@ -92,17 +92,7 @@ class CutiPublicController extends Controller
                 ->get();
         }
 
-        $attachmentUrls = $riwayatCuti
-            ->filter(fn (Cuti $cuti): bool => filled($cuti->lampiran))
-            ->mapWithKeys(fn (Cuti $cuti): array => [
-                $cuti->getKey() => URL::temporarySignedRoute(
-                    'cuti.public.attachment',
-                    now()->addMinutes(30),
-                    ['cuti' => $cuti],
-                ),
-            ]);
-
-        return view('cuti.status', compact('riwayatCuti', 'nipSearched', 'attachmentUrls'));
+        return view('cuti.status', compact('riwayatCuti', 'nipSearched'));
     }
 
     // Rekap Data Admin (Filter Per Bulan)
@@ -166,7 +156,10 @@ class CutiPublicController extends Controller
         }
 
         // Buat Signed URL sementara yang berlaku selama 30 menit
-        $url = Storage::disk(config('filesystems.default'))->temporaryUrl(
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('s3');
+
+        $url = $disk->temporaryUrl(
             $cuti->lampiran,
             now()->addMinutes(30),
             ['ResponseContentDisposition' => 'inline']
