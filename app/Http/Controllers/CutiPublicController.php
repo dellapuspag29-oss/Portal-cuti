@@ -157,16 +157,17 @@ class CutiPublicController extends Controller
     }
 
     public function downloadAttachment(Cuti $cuti)
-    {
+{
         if (!$cuti->lampiran) {
             return back()->with('error', 'File lampiran tidak ditemukan.');
         }
 
-        $endpoint = rtrim(config('filesystems.disks.s3.endpoint'), '/');
-        $bucket = config('filesystems.disks.s3.bucket');
+        // Buat Signed URL sementara yang berlaku selama 30 menit
+        $url = Storage::disk('s3')->temporaryUrl(
+            $cuti->lampiran,
+            now()->addMinutes(30)
+        );
 
-        $publicUrl = sprintf('%s/object/public/%s/%s', $endpoint, $bucket, ltrim($cuti->lampiran, '/'));
-
-        return redirect()->away($publicUrl);
+        return redirect()->away($url);
     }
 }

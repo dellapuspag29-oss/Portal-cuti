@@ -45,6 +45,7 @@
                                     <thead>
                                         <tr>
                                             <th>Tanggal Pengajuan</th>
+                                            <th>Nama Pegawai</th>
                                             <th>Kategori</th>
                                             <th>Unit Kerja</th>
                                             <th>Tanggal Cuti</th>
