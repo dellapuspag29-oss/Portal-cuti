@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Portal Cuti Digital - TALNGATI</title>
+    <title>Portal Pengajuan Cuti - TALNGATI</title>
 
     <style>
         /* =========================================================
@@ -763,7 +763,7 @@
                         </span>
 
                         <span class="brand-subtitle">
-                            Portal Cuti Digital
+                            Portal Pengajuan Cuti
                         </span>
 
                     </span>
@@ -798,12 +798,6 @@
                     <h1 class="hero-title">
                         Cuti lebih mudah, kerja lebih tenang.
                     </h1>
-
-
-                    <p class="hero-description">
-                        Ajukan dan pantau cuti Anda melalui satu portal resmi
-                        Dinas Lingkungan Hidup.
-                    </p>
 
 
                     <!-- BUTTONS -->
@@ -1030,7 +1024,7 @@
                     <!-- NOTE -->
 
                     <p class="service-note">
-                        Administrasi cuti yang lebih tertata dalam satu tempat.
+                        Administrasi cuti lebih tertata dalam satu tempat.
                     </p>
 
                 </div>
