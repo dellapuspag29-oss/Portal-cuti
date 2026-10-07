@@ -9,7 +9,6 @@
 
     <title>Pengajuan Cuti - TALNGATI</title>
 
-
     <style>
 
         /* =========================================================
@@ -17,9 +16,9 @@
         ========================================================= */
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         html {
@@ -29,16 +28,12 @@
         body {
             font-family:
                 Inter,
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
                 "Segoe UI",
+                Arial,
                 sans-serif;
 
             background: #f4f8f6;
             color: #173f3a;
-
             min-height: 100vh;
         }
 
@@ -46,12 +41,7 @@
         input,
         select,
         textarea {
-            font: inherit;
-        }
-
-        button,
-        a {
-            -webkit-tap-highlight-color: transparent;
+            font-family: inherit;
         }
 
         a {
@@ -65,55 +55,69 @@
 
         .page {
             position: relative;
-
             min-height: 100vh;
-
             overflow: hidden;
-
-            background: #f4f8f6;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4f8f6 0%,
+                    #f7fbf9 55%,
+                    #eef7f3 100%
+                );
         }
 
 
         /* =========================================================
-           DECORATIVE ORBS
+           BACKGROUND DECORATION
         ========================================================= */
 
-        .ambient-orb {
+        .orb {
             position: fixed;
-
-            border-radius: 50%;
-
-            pointer-events: none;
-
             z-index: 0;
+            pointer-events: none;
+            border-radius: 50%;
         }
 
-        .orb-one {
-            width: 310px;
-            height: 310px;
+        .orb-green {
+            width: 330px;
+            height: 330px;
 
-            right: -145px;
-            top: 180px;
+            top: 170px;
+            right: -150px;
 
             background: #c9ebe1;
 
-            opacity: .72;
+            opacity: .85;
 
-            animation: floatOne 10s ease-in-out infinite;
+            animation: floatingGreen 9s ease-in-out infinite;
         }
 
-        .orb-two {
-            width: 220px;
-            height: 220px;
+        .orb-yellow {
+            width: 230px;
+            height: 230px;
 
-            left: -130px;
-            bottom: 50px;
+            left: -120px;
+            bottom: 40px;
 
-            background: #f7dda0;
+            background: #f8dda0;
 
-            opacity: .70;
+            opacity: .82;
 
-            animation: floatTwo 12s ease-in-out infinite;
+            animation: floatingYellow 11s ease-in-out infinite;
+        }
+
+        .orb-small {
+            width: 75px;
+            height: 75px;
+
+            top: 115px;
+            right: 12%;
+
+            background: #f3c873;
+
+            opacity: .18;
+
+            animation: pulseOrb 5s ease-in-out infinite;
         }
 
 
@@ -125,26 +129,25 @@
             position: relative;
             z-index: 10;
 
-            width: 100%;
-
             background: rgba(248, 252, 251, .96);
 
             border-bottom: 1px solid #d7ebe8;
 
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+
+            box-shadow:
+                0 3px 18px rgba(23, 63, 58, .04);
         }
 
         .header-inner {
-            width: min(1080px, calc(100% - 40px));
+            width: min(1050px, calc(100% - 40px));
 
-            min-height: 72px;
+            min-height: 74px;
 
-            margin: 0 auto;
+            margin: auto;
 
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
         }
 
@@ -155,47 +158,42 @@
 
         .brand {
             display: flex;
-
             align-items: center;
-
             gap: 12px;
 
             color: #173f3a;
         }
 
         .brand-icon {
-            width: 38px;
-            height: 38px;
-
-            flex-shrink: 0;
-
-            border-radius: 9px;
+            width: 40px;
+            height: 40px;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
+
+            border-radius: 10px;
 
             background: #315c4b;
 
             color: white;
+
+            box-shadow:
+                0 5px 12px rgba(49, 92, 75, .20);
         }
 
         .brand-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 23px;
+            height: 23px;
         }
 
         .brand-name {
             display: block;
 
             font-size: 16px;
-
-            line-height: 1.2;
-
             font-weight: 800;
 
-            letter-spacing: -.3px;
+            letter-spacing: -.2px;
         }
 
         .brand-subtitle {
@@ -204,12 +202,9 @@
             margin-top: 3px;
 
             font-size: 9px;
+            font-weight: 600;
 
-            line-height: 1;
-
-            font-weight: 500;
-
-            letter-spacing: 1.4px;
+            letter-spacing: 1.5px;
 
             text-transform: uppercase;
 
@@ -223,69 +218,61 @@
 
         .main {
             position: relative;
+            z-index: 2;
 
-            z-index: 1;
+            width: min(930px, calc(100% - 40px));
 
-            width: min(900px, calc(100% - 40px));
+            margin: auto;
 
-            margin: 0 auto;
-
-            padding: 45px 0 55px;
+            padding: 48px 0 45px;
         }
 
 
         /* =========================================================
-           TOP AREA
+           PAGE INTRO
         ========================================================= */
 
-        .page-top {
+        .intro {
             display: flex;
-
-            align-items: center;
-
+            align-items: flex-end;
             justify-content: space-between;
 
-            gap: 20px;
+            gap: 25px;
 
             margin-bottom: 25px;
 
-            animation: fadeUp .55s ease-out both;
+            animation: fadeUp .65s ease both;
         }
 
-        .page-heading small {
-            display: block;
-
-            margin-bottom: 5px;
-
-            font-size: 12px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.4px;
-
-            text-transform: uppercase;
+        .eyebrow {
+            margin-bottom: 7px;
 
             color: #2f8064;
-        }
 
-        .page-heading h1 {
-            font-size: 32px;
-
-            line-height: 1.2;
-
+            font-size: 13px;
             font-weight: 800;
 
-            letter-spacing: -1px;
-
-            color: #173f3a;
+            letter-spacing: .4px;
         }
 
-        .page-heading p {
-            margin-top: 7px;
+        .intro h1 {
+            color: #173f3a;
 
-            font-size: 14px;
+            font-size: 34px;
+            line-height: 1.15;
+
+            letter-spacing: -1.1px;
+
+            font-weight: 850;
+        }
+
+        .intro p {
+            margin-top: 8px;
 
             color: #70827a;
+
+            font-size: 14px;
+            line-height: 1.6;
         }
 
 
@@ -293,43 +280,45 @@
            STATUS BUTTON
         ========================================================= */
 
-        .status-button {
+        .status-btn {
+            flex-shrink: 0;
+
             display: inline-flex;
-
             align-items: center;
-
             justify-content: center;
-
             gap: 8px;
 
             min-height: 44px;
 
             padding: 0 17px;
 
-            border: 1px solid #c8d9d0;
-
+            border: 1px solid #bfd9ce;
             border-radius: 9px;
+
+            background: rgba(255,255,255,.8);
 
             color: #267052;
 
-            background: rgba(255,255,255,.75);
-
-            font-size: 14px;
-
+            font-size: 13px;
             font-weight: 800;
 
-            transition: .2s ease;
+            transition: all .25s ease;
         }
 
-        .status-button svg {
+        .status-btn svg {
             width: 16px;
             height: 16px;
         }
 
-        .status-button:hover {
-            background: #e6f1eb;
+        .status-btn:hover {
+            background: #e7f5ef;
+
+            border-color: #9bc7b7;
 
             transform: translateY(-2px);
+
+            box-shadow:
+                0 7px 18px rgba(38, 112, 82, .10);
         }
 
 
@@ -338,78 +327,111 @@
         ========================================================= */
 
         .form-card {
-            overflow: visible;
+            position: relative;
 
             background: rgba(255,255,255,.97);
 
-            border: 1px solid #d7ebe8;
+            border: 1px solid #d4e9e2;
 
             border-radius: 17px;
 
-            box-shadow:
-                0 20px 50px rgba(38, 122, 112, .10);
+            overflow: visible;
 
-            animation: cardIn .7s .08s ease-out both;
+            box-shadow:
+                0 18px 45px rgba(23, 63, 58, .10);
+
+            animation: cardAppear .75s .08s ease both;
+        }
+
+        .form-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 25px;
+            right: 25px;
+            top: 0;
+
+            height: 4px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #315c4b,
+                    #2f8064,
+                    #e39b3b
+                );
+
+            border-radius: 0 0 8px 8px;
         }
 
 
         /* =========================================================
-           FORM CARD HEADER
+           FORM HEADER
         ========================================================= */
 
-        .form-card-header {
-            position: relative;
+        .form-header {
+            padding: 28px 30px 23px;
 
-            padding: 25px 28px;
-
-            border-bottom: 1px solid #e3eeeb;
+            border-bottom: 1px solid #e4efeb;
 
             background: #fbfdfc;
 
             border-radius: 17px 17px 0 0;
         }
 
-        .form-card-header::before {
-            content: "";
+        .form-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            position: absolute;
-
-            left: 28px;
-            top: 0;
-
-            width: 45px;
-            height: 3px;
-
-            border-radius: 0 0 5px 5px;
-
-            background: #e39b3b;
+            gap: 15px;
         }
 
-        .form-card-header h2 {
-            font-size: 20px;
-
-            font-weight: 800;
-
+        .form-header h2 {
             color: #203f38;
+
+            font-size: 21px;
+            font-weight: 800;
         }
 
-        .form-card-header p {
+        .form-header p {
             margin-top: 5px;
 
+            color: #7a8b84;
+
             font-size: 13px;
+        }
 
-            line-height: 1.6;
+        .form-icon {
+            width: 42px;
+            height: 42px;
 
-            color: #778981;
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #fff1d7;
+
+            color: #d08020;
+        }
+
+        .form-icon svg {
+            width: 22px;
+            height: 22px;
         }
 
 
         /* =========================================================
-           FORM CONTENT
+           CONTENT
         ========================================================= */
 
         .form-content {
-            padding: 28px;
+            padding: 29px 30px 30px;
         }
 
 
@@ -418,9 +440,9 @@
         ========================================================= */
 
         .alert {
-            padding: 13px 15px;
+            margin-bottom: 23px;
 
-            margin-bottom: 22px;
+            padding: 13px 15px;
 
             border-radius: 10px;
 
@@ -428,23 +450,23 @@
 
             line-height: 1.6;
 
-            animation: fadeUp .4s ease-out both;
+            animation: fadeUp .4s ease both;
         }
 
         .alert-success {
-            background: #e8f5f1;
+            color: #276c5d;
 
-            border: 1px solid #c9e7dd;
+            background: #e4f5ef;
 
-            color: #286c5d;
+            border: 1px solid #bfe3d6;
         }
 
         .alert-danger {
-            background: #fff0ee;
+            color: #a3473d;
+
+            background: #fff0ed;
 
             border: 1px solid #f1d0ca;
-
-            color: #a84b40;
         }
 
         .alert-danger ul {
@@ -453,63 +475,71 @@
 
 
         /* =========================================================
-           FORM SECTIONS
+           SECTION
         ========================================================= */
 
-        .form-section {
-            margin-bottom: 27px;
+        .section {
+            margin-bottom: 29px;
+
+            animation: fadeUp .55s ease both;
+        }
+
+        .section:nth-child(2) {
+            animation-delay: .08s;
+        }
+
+        .section:nth-child(3) {
+            animation-delay: .14s;
         }
 
         .section-title {
             display: flex;
-
             align-items: center;
+            gap: 10px;
 
-            gap: 9px;
+            margin-bottom: 17px;
 
-            margin-bottom: 15px;
+            padding-bottom: 11px;
 
-            padding-bottom: 10px;
-
-            border-bottom: 1px solid #edf1ef;
+            border-bottom: 1px solid #e8efec;
         }
 
-        .section-number {
-            width: 25px;
-            height: 25px;
+        .number {
+            width: 27px;
+            height: 27px;
 
             flex-shrink: 0;
 
             display: flex;
-
             align-items: center;
             justify-content: center;
 
             border-radius: 50%;
 
-            background: #e8f5f1;
+            background: #315c4b;
 
-            color: #2f8064;
+            color: white;
 
             font-size: 12px;
-
             font-weight: 800;
+
+            box-shadow:
+                0 4px 10px rgba(49, 92, 75, .16);
         }
 
-        .section-title span:last-child {
+        .section-title strong {
+            color: #31564c;
+
             font-size: 14px;
-
             font-weight: 800;
-
-            color: #34564d;
         }
 
 
         /* =========================================================
-           FORM GRID
+           GRID
         ========================================================= */
 
-        .form-grid {
+        .grid-2 {
             display: grid;
 
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -517,13 +547,18 @@
             gap: 17px;
         }
 
-        .form-grid-4 {
+        .grid-4 {
             display: grid;
 
             grid-template-columns: repeat(4, minmax(0, 1fr));
 
             gap: 14px;
         }
+
+
+        /* =========================================================
+           FIELD
+        ========================================================= */
 
         .field {
             margin-bottom: 17px;
@@ -533,27 +568,25 @@
             margin-bottom: 0;
         }
 
-        .field-label {
+        .label {
             display: block;
 
             margin-bottom: 7px;
 
-            font-size: 13px;
-
-            font-weight: 800;
-
             color: #304d45;
+
+            font-size: 12px;
+            font-weight: 800;
         }
 
         .required {
-            color: #d66b54;
+            color: #db704b;
         }
 
-        .field-help {
-            font-size: 11px;
+        .hint {
+            color: #929e99;
 
-            color: #8b9892;
-
+            font-size: 10px;
             font-weight: 500;
         }
 
@@ -568,19 +601,20 @@
         .file-input {
             width: 100%;
 
-            border: 1px solid #d3e0da;
+            border: 1px solid #cbded6;
 
             border-radius: 9px;
 
+            outline: none;
+
             background: #fff;
 
-            color: #263f38;
-
-            outline: none;
+            color: #29453d;
 
             transition:
                 border-color .2s ease,
                 box-shadow .2s ease,
+                transform .2s ease,
                 background .2s ease;
         }
 
@@ -594,7 +628,7 @@
         }
 
         .textarea {
-            min-height: 92px;
+            min-height: 95px;
 
             padding: 12px 13px;
 
@@ -607,33 +641,44 @@
 
         .input::placeholder,
         .textarea::placeholder {
-            color: #a1ada7;
+            color: #a1aea8;
+        }
+
+        .input:hover,
+        .select:hover,
+        .textarea:hover,
+        .file-input:hover {
+            border-color: #9dc4b5;
         }
 
         .input:focus,
         .select:focus,
         .textarea:focus,
         .file-input:focus {
-            border-color: #5a9c84;
+            border-color: #3c8a6d;
+
+            background: #fdfffe;
 
             box-shadow:
-                0 0 0 3px rgba(90, 156, 132, .13);
+                0 0 0 3px rgba(60, 138, 109, .12);
+
+            transform: translateY(-1px);
         }
 
         .readonly {
-            background: #f3f7f5;
+            background: #f1f6f3;
 
-            color: #64776f;
+            color: #667b72;
 
             cursor: not-allowed;
         }
 
 
         /* =========================================================
-           SEARCH PEGawai
+           SEARCH PEGAWAI
         ========================================================= */
 
-        .search-wrapper {
+        .search-wrap {
             position: relative;
         }
 
@@ -652,7 +697,7 @@
 
             transform: translateY(-50%);
 
-            color: #729087;
+            color: #6b9182;
 
             pointer-events: none;
         }
@@ -663,98 +708,115 @@
 
 
         /* =========================================================
-           SEARCH RESULTS
+           SEARCH RESULT
         ========================================================= */
 
-        .search-results {
+        .results {
             position: relative;
 
-            z-index: 20;
+            z-index: 30;
 
             margin-top: 7px;
         }
 
-        .search-result {
+        .result {
             width: 100%;
 
             display: block;
 
-            padding: 11px 13px;
+            padding: 12px 14px;
 
-            text-align: left;
-
-            border: 1px solid #dce8e3;
+            border: 1px solid #d7e7e1;
 
             border-bottom: 0;
 
-            background: #fff;
+            background: white;
 
-            color: #304d45;
+            color: #28483f;
+
+            text-align: left;
 
             cursor: pointer;
 
-            transition: .18s ease;
+            transition:
+                background .2s ease,
+                transform .2s ease;
         }
 
-        .search-result:first-child {
+        .result:first-child {
             border-radius: 9px 9px 0 0;
         }
 
-        .search-result:last-child {
-            border-bottom: 1px solid #dce8e3;
+        .result:last-child {
+            border-bottom: 1px solid #d7e7e1;
 
             border-radius: 0 0 9px 9px;
         }
 
-        .search-result:only-child {
-            border-bottom: 1px solid #dce8e3;
+        .result:only-child {
+            border-bottom: 1px solid #d7e7e1;
 
             border-radius: 9px;
         }
 
-        .search-result:hover {
-            background: #eef7f3;
+        .result:hover {
+            background: #eaf6f1;
 
-            transform: translateX(2px);
+            transform: translateX(3px);
         }
 
         .result-name {
             display: block;
 
             font-size: 13px;
-
             font-weight: 800;
-
-            color: #23463d;
         }
 
-        .result-detail {
+        .result-info {
             display: block;
 
             margin-top: 3px;
 
-            font-size: 11px;
+            color: #82928b;
 
-            color: #809089;
+            font-size: 10px;
         }
 
 
         /* =========================================================
-           FILE INPUT
+           FILE
         ========================================================= */
 
-        .file-input {
-            min-height: 46px;
+        .file-box {
+            padding: 15px;
 
-            padding: 9px;
+            border: 1px dashed #b9d4c9;
+
+            border-radius: 11px;
+
+            background: #f8fcfa;
+
+            transition: all .25s ease;
+        }
+
+        .file-box:hover {
+            border-color: #65a58d;
+
+            background: #f1faf6;
+        }
+
+        .file-input {
+            min-height: 44px;
+
+            padding: 8px;
+
+            background: white;
 
             font-size: 12px;
-
-            background: #fbfcfb;
         }
 
         .file-input::file-selector-button {
-            margin-right: 10px;
+            margin-right: 9px;
 
             padding: 7px 12px;
 
@@ -762,15 +824,20 @@
 
             border-radius: 7px;
 
-            background: #e8f5f1;
+            background: #315c4b;
 
-            color: #286c5d;
+            color: white;
 
-            font-size: 12px;
-
+            font-size: 11px;
             font-weight: 800;
 
             cursor: pointer;
+
+            transition: background .2s ease;
+        }
+
+        .file-input::file-selector-button:hover {
+            background: #244a3c;
         }
 
 
@@ -779,64 +846,98 @@
         ========================================================= */
 
         .submit-area {
-            margin-top: 28px;
+            margin-top: 30px;
 
-            padding-top: 23px;
+            padding-top: 24px;
 
-            border-top: 1px solid #e9efec;
+            border-top: 1px solid #e4eeea;
         }
 
-        .submit-button {
+        .submit-btn {
+            position: relative;
+
             width: 100%;
 
             min-height: 53px;
 
-            border: 0;
-
-            border-radius: 10px;
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
             gap: 9px;
+
+            border: 0;
+            border-radius: 10px;
 
             background: #e39b3b;
 
             color: #173f3a;
 
-            font-size: 15px;
-
-            font-weight: 800;
+            font-size: 14px;
+            font-weight: 850;
 
             cursor: pointer;
 
             box-shadow:
-                0 7px 16px rgba(227, 155, 59, .16);
+                0 8px 18px rgba(227, 155, 59, .22);
+
+            overflow: hidden;
 
             transition:
-                transform .2s ease,
-                background .2s ease,
-                box-shadow .2s ease;
+                transform .22s ease,
+                background .22s ease,
+                box-shadow .22s ease;
         }
 
-        .submit-button:hover {
-            background: #efad4c;
+        .submit-btn::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -100%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,.28),
+                    transparent
+                );
+
+            transform: skewX(-20deg);
+
+            transition: left .6s ease;
+        }
+
+        .submit-btn:hover {
+            background: #f0ad4b;
 
             transform: translateY(-2px);
 
             box-shadow:
-                0 10px 22px rgba(227, 155, 59, .22);
+                0 12px 25px rgba(227, 155, 59, .28);
         }
 
-        .submit-button:active {
+        .submit-btn:hover::before {
+            left: 140%;
+        }
+
+        .submit-btn:active {
             transform: translateY(0);
         }
 
-        .submit-button svg {
+        .submit-btn svg {
             width: 18px;
             height: 18px;
+
+            transition: transform .25s ease;
+        }
+
+        .submit-btn:hover svg {
+            transform: translateX(4px);
         }
 
 
@@ -846,56 +947,49 @@
 
         .footer {
             position: relative;
-
             z-index: 2;
 
-            width: min(900px, calc(100% - 40px));
+            width: min(930px, calc(100% - 40px));
 
-            margin: 0 auto;
+            margin: auto;
 
-            padding-bottom: 27px;
-
-            font-size: 13px;
-
-            line-height: 1.6;
+            padding-bottom: 28px;
 
             color: #789087;
+
+            font-size: 12px;
         }
 
 
         /* =========================================================
-           ANIMATIONS
+           ANIMATION
         ========================================================= */
 
         @keyframes fadeUp {
 
             from {
                 opacity: 0;
-
-                transform: translateY(12px);
+                transform: translateY(15px);
             }
 
             to {
                 opacity: 1;
-
                 transform: translateY(0);
             }
 
         }
 
-        @keyframes cardIn {
+        @keyframes cardAppear {
 
             from {
                 opacity: 0;
-
                 transform:
-                    translateY(18px)
+                    translateY(20px)
                     scale(.985);
             }
 
             to {
                 opacity: 1;
-
                 transform:
                     translateY(0)
                     scale(1);
@@ -903,28 +997,43 @@
 
         }
 
-        @keyframes floatOne {
+        @keyframes floatingGreen {
 
             0%,
             100% {
-                transform: translate3d(0, 0, 0);
+                transform: translate(0, 0);
             }
 
             50% {
-                transform: translate3d(-12px, -14px, 0);
+                transform: translate(-14px, -18px);
             }
 
         }
 
-        @keyframes floatTwo {
+        @keyframes floatingYellow {
 
             0%,
             100% {
-                transform: translate3d(0, 0, 0);
+                transform: translate(0, 0);
             }
 
             50% {
-                transform: translate3d(12px, -10px, 0);
+                transform: translate(15px, -12px);
+            }
+
+        }
+
+        @keyframes pulseOrb {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: .18;
+            }
+
+            50% {
+                transform: scale(1.12);
+                opacity: .27;
             }
 
         }
@@ -939,21 +1048,17 @@
 
 
         /* =========================================================
-           RESPONSIVE TABLET
+           MOBILE
         ========================================================= */
 
-        @media (max-width: 850px) {
+        @media (max-width: 800px) {
 
-            .form-grid-4 {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
             }
 
         }
 
-
-        /* =========================================================
-           RESPONSIVE MOBILE
-        ========================================================= */
 
         @media (max-width: 600px) {
 
@@ -964,45 +1069,40 @@
             .main {
                 width: calc(100% - 40px);
 
-                padding: 35px 0 45px;
+                padding-top: 35px;
             }
 
-            .page-top {
-                align-items: flex-start;
-
+            .intro {
                 flex-direction: column;
 
+                align-items: stretch;
+
                 gap: 17px;
-
-                margin-bottom: 20px;
             }
 
-            .page-heading h1 {
-                font-size: 28px;
+            .intro h1 {
+                font-size: 29px;
             }
 
-            .page-heading p {
-                font-size: 13px;
-            }
-
-            .status-button {
+            .status-btn {
                 width: 100%;
             }
 
-            .form-card-header {
-                padding: 21px 19px;
-            }
-
-            .form-card-header::before {
-                left: 19px;
+            .form-header {
+                padding: 24px 20px 20px;
             }
 
             .form-content {
-                padding: 21px 19px;
+                padding: 24px 20px;
             }
 
-            .form-grid,
-            .form-grid-4 {
+            .form-card::before {
+                left: 20px;
+                right: 20px;
+            }
+
+            .grid-2,
+            .grid-4 {
                 grid-template-columns: 1fr;
 
                 gap: 0;
@@ -1012,67 +1112,39 @@
                 margin-bottom: 17px;
             }
 
-            .section-title {
-                margin-bottom: 14px;
-            }
-
-            .section-title span:last-child {
-                font-size: 13px;
-            }
-
-            .input,
-            .select {
-                height: 47px;
-            }
-
-            .textarea {
-                min-height: 100px;
-            }
-
             .footer {
                 width: calc(100% - 40px);
             }
 
-            .orb-one {
+            .orb-green {
                 width: 250px;
                 height: 250px;
 
                 right: -125px;
-
-                top: 180px;
             }
 
-            .orb-two {
-                width: 180px;
-                height: 180px;
+            .orb-yellow {
+                width: 175px;
+                height: 175px;
 
-                left: -105px;
+                left: -95px;
+            }
 
-                bottom: 70px;
+            .orb-small {
+                display: none;
             }
 
         }
 
 
-        /* =========================================================
-           REDUCE MOTION
-        ========================================================= */
-
         @media (prefers-reduced-motion: reduce) {
 
-            .page-top,
-            .form-card {
-                animation: none;
-            }
-
-            .ambient-orb {
-                animation: none;
-            }
-
-            .status-button,
-            .submit-button,
-            .search-result {
-                transition: none;
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
             }
 
         }
@@ -1088,12 +1160,14 @@
 
 
     <!-- =========================================================
-         BACKGROUND ORBS
+         DECORATION
     ========================================================== -->
 
-    <span class="ambient-orb orb-one"></span>
+    <div class="orb orb-green"></div>
 
-    <span class="ambient-orb orb-two"></span>
+    <div class="orb orb-yellow"></div>
+
+    <div class="orb orb-small"></div>
 
 
     <!-- =========================================================
@@ -1107,12 +1181,9 @@
             <a
                 href="{{ url('/') }}"
                 class="brand"
-                aria-label="TALNGATI Beranda"
             >
 
                 <span class="brand-icon">
-
-                    <!-- Leaf -->
 
                     <svg
                         viewBox="0 0 24 24"
@@ -1122,8 +1193,11 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     >
-                        <path d="M20.8 3.2C13.3 3.1 7.5 5.1 4.4 9.1c-2.5 3.2-1.8 7.6 1.2 9.5 2.9 1.8 6.8.8 8.9-2.1 2.5-3.5 2.7-7.8 2.7-7.8" />
-                        <path d="M3.7 20.3c2.5-4.3 5.8-6.7 10.1-8.4" />
+
+                        <path d="M20.8 3.2C13.3 3.1 7.5 5.1 4.4 9.1c-2.5 3.2-1.8 7.6 1.2 9.5 2.9 1.8 6.8.8 8.9-2.1 2.5-3.5 2.7-7.8 2.7-7.8"/>
+
+                        <path d="M3.7 20.3c2.5-4.3 5.8-6.7 10.1-8.4"/>
+
                     </svg>
 
                 </span>
@@ -1155,17 +1229,15 @@
     <main class="main">
 
 
-        <!-- =====================================================
-             PAGE HEADING
-        ====================================================== -->
+        <!-- INTRO -->
 
-        <div class="page-top">
+        <div class="intro">
 
-            <div class="page-heading">
+            <div>
 
-                <small>
+                <div class="eyebrow">
                     Layanan Pengajuan Cuti Online
-                </small>
+                </div>
 
                 <h1>
                     Pengajuan Cuti
@@ -1180,10 +1252,8 @@
 
             <a
                 href="{{ route('cuti.public.status') }}"
-                class="status-button"
+                class="status-btn"
             >
-
-                <!-- Search icon -->
 
                 <svg
                     viewBox="0 0 24 24"
@@ -1193,11 +1263,20 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                 >
-                    <circle cx="11" cy="11" r="7"></circle>
-                    <path d="m20 20-4-4"></path>
+
+                    <circle
+                        cx="11"
+                        cy="11"
+                        r="7"
+                    ></circle>
+
+                    <path
+                        d="m20 20-4-4"
+                    ></path>
+
                 </svg>
 
-                Cek Status
+                Lihat Status
 
             </a>
 
@@ -1213,17 +1292,55 @@
 
             <!-- FORM HEADER -->
 
-            <div class="form-card-header">
+            <div class="form-header">
 
-                <h2>
-                    Formulir Pengajuan
-                </h2>
+                <div class="form-header-top">
 
-                <p>
-                    Kolom bertanda
-                    <strong>*</strong>
-                    wajib diisi sebelum formulir dikirim.
-                </p>
+                    <div>
+
+                        <h2>
+                            Formulir Pengajuan Cuti
+                        </h2>
+
+                        <p>
+                            Isi data dengan benar sebelum mengirim pengajuan.
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <rect
+                                x="3"
+                                y="4"
+                                width="18"
+                                height="17"
+                                rx="2"
+                            ></rect>
+
+                            <path
+                                d="M8 2v4M16 2v4M3 9h18"
+                            ></path>
+
+                            <path
+                                d="M8 13h3M8 17h5"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -1233,22 +1350,20 @@
             <div class="form-content">
 
 
-                <!-- =================================================
-                     SUCCESS
-                ================================================== -->
+                {{-- SUCCESS --}}
 
                 @if(session('success'))
 
                     <div class="alert alert-success">
+
                         {{ session('success') }}
+
                     </div>
 
                 @endif
 
 
-                <!-- =================================================
-                     ERRORS
-                ================================================== -->
+                {{-- ERRORS --}}
 
                 @if ($errors->any())
 
@@ -1285,20 +1400,20 @@
 
 
                     <!-- =================================================
-                         SECTION 1 - PEGAWAI
+                         SECTION 1
                     ================================================== -->
 
-                    <div class="form-section">
+                    <div class="section">
 
                         <div class="section-title">
 
-                            <span class="section-number">
+                            <span class="number">
                                 1
                             </span>
 
-                            <span>
+                            <strong>
                                 Data Pegawai
-                            </span>
+                            </strong>
 
                         </div>
 
@@ -1309,18 +1424,21 @@
 
                             <label
                                 for="pegawai_search"
-                                class="field-label"
+                                class="label"
                             >
+
                                 Cari Pegawai
-                                <span class="required">*</span>
+
+                                <span class="required">
+                                    *
+                                </span>
+
                             </label>
 
 
-                            <div class="search-wrapper">
+                            <div class="search-wrap">
 
                                 <div class="search-box">
-
-                                    <!-- Search icon -->
 
                                     <svg
                                         class="search-icon"
@@ -1331,8 +1449,17 @@
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                     >
-                                        <circle cx="11" cy="11" r="7"></circle>
-                                        <path d="m20 20-4-4"></path>
+
+                                        <circle
+                                            cx="11"
+                                            cy="11"
+                                            r="7"
+                                        ></circle>
+
+                                        <path
+                                            d="m20 20-4-4"
+                                        ></path>
+
                                     </svg>
 
 
@@ -1357,7 +1484,7 @@
 
                                 <div
                                     id="pegawai_results"
-                                    class="search-results"
+                                    class="results"
                                 ></div>
 
                             </div>
@@ -1367,13 +1494,13 @@
 
                         <!-- DATA PEGAWAI -->
 
-                        <div class="form-grid-4">
+                        <div class="grid-4">
 
                             <div class="field">
 
                                 <label
                                     for="nip"
-                                    class="field-label"
+                                    class="label"
                                 >
                                     NIP
                                 </label>
@@ -1394,7 +1521,7 @@
 
                                 <label
                                     for="nama_karyawan"
-                                    class="field-label"
+                                    class="label"
                                 >
                                     Nama Lengkap
                                 </label>
@@ -1415,7 +1542,7 @@
 
                                 <label
                                     for="jabatan"
-                                    class="field-label"
+                                    class="label"
                                 >
                                     Jabatan
                                 </label>
@@ -1436,7 +1563,7 @@
 
                                 <label
                                     for="unit_kerja"
-                                    class="field-label"
+                                    class="label"
                                 >
                                     Unit Kerja
                                 </label>
@@ -1458,20 +1585,20 @@
 
 
                     <!-- =================================================
-                         SECTION 2 - CUTI
+                         SECTION 2
                     ================================================== -->
 
-                    <div class="form-section">
+                    <div class="section">
 
                         <div class="section-title">
 
-                            <span class="section-number">
+                            <span class="number">
                                 2
                             </span>
 
-                            <span>
+                            <strong>
                                 Detail Cuti
-                            </span>
+                            </strong>
 
                         </div>
 
@@ -1482,10 +1609,15 @@
 
                             <label
                                 for="kategori_cuti"
-                                class="field-label"
+                                class="label"
                             >
+
                                 Kategori Cuti
-                                <span class="required">*</span>
+
+                                <span class="required">
+                                    *
+                                </span>
+
                             </label>
 
 
@@ -1497,7 +1629,7 @@
                             >
 
                                 <option value="">
-                                    -- Pilih Kategori --
+                                    -- Pilih Kategori Cuti --
                                 </option>
 
                                 <option
@@ -1528,16 +1660,21 @@
 
                         <!-- TANGGAL -->
 
-                        <div class="form-grid">
+                        <div class="grid-2">
 
                             <div class="field">
 
                                 <label
                                     for="tanggal_mulai"
-                                    class="field-label"
+                                    class="label"
                                 >
+
                                     Tanggal Mulai
-                                    <span class="required">*</span>
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
                                 </label>
 
                                 <input
@@ -1556,10 +1693,15 @@
 
                                 <label
                                     for="tanggal_selesai"
-                                    class="field-label"
+                                    class="label"
                                 >
+
                                     Tanggal Selesai
-                                    <span class="required">*</span>
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
                                 </label>
 
                                 <input
@@ -1582,17 +1724,22 @@
 
                             <label
                                 for="alasan"
-                                class="field-label"
+                                class="label"
                             >
+
                                 Alasan Cuti
-                                <span class="required">*</span>
+
+                                <span class="required">
+                                    *
+                                </span>
+
                             </label>
 
                             <textarea
                                 name="alasan"
                                 id="alasan"
                                 class="textarea"
-                                rows="3"
+                                rows="4"
                                 placeholder="Tuliskan alasan pengajuan cuti..."
                                 required
                             >{{ old('alasan') }}</textarea>
@@ -1606,10 +1753,15 @@
 
                             <label
                                 for="alamat"
-                                class="field-label"
+                                class="label"
                             >
-                                Alamat Selama Menjalankan Cuti
-                                <span class="required">*</span>
+
+                                Alamat Selama Cuti
+
+                                <span class="required">
+                                    *
+                                </span>
+
                             </label>
 
                             <textarea
@@ -1617,7 +1769,7 @@
                                 id="alamat"
                                 class="textarea"
                                 rows="3"
-                                placeholder="Masukkan alamat yang dapat dihubungi selama cuti..."
+                                placeholder="Masukkan alamat selama menjalankan cuti..."
                                 required
                             >{{ old('alamat') }}</textarea>
 
@@ -1630,10 +1782,15 @@
 
                             <label
                                 for="nomor_telepon"
-                                class="field-label"
+                                class="label"
                             >
-                                Nomor Telepon / WhatsApp Yang Aktif
-                                <span class="required">*</span>
+
+                                Nomor Telepon / WhatsApp Aktif
+
+                                <span class="required">
+                                    *
+                                </span>
+
                             </label>
 
                             <input
@@ -1652,51 +1809,56 @@
 
 
                     <!-- =================================================
-                         SECTION 3 - LAMPIRAN
+                         SECTION 3
                     ================================================== -->
 
-                    <div class="form-section">
+                    <div class="section">
 
                         <div class="section-title">
 
-                            <span class="section-number">
+                            <span class="number">
                                 3
                             </span>
 
-                            <span>
+                            <strong>
                                 Lampiran
-                            </span>
+                            </strong>
 
                         </div>
 
 
-                        <div class="field">
+                        <div class="file-box">
 
-                            <label
-                                for="lampiran"
-                                class="field-label"
-                            >
-                                Lampiran Bukti
+                            <div class="field">
 
-                                <span class="required">
-                                    *
-                                </span>
+                                <label
+                                    for="lampiran"
+                                    class="label"
+                                >
 
-                                <span class="field-help">
-                                    (PDF, maksimal 2 MB)
-                                </span>
+                                    Lampiran Bukti
 
-                            </label>
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                    <span class="hint">
+                                        PDF, maksimal 2 MB
+                                    </span>
+
+                                </label>
 
 
-                            <input
-                                type="file"
-                                name="lampiran"
-                                id="lampiran"
-                                class="file-input"
-                                accept="application/pdf"
-                                required
-                            >
+                                <input
+                                    type="file"
+                                    name="lampiran"
+                                    id="lampiran"
+                                    class="file-input"
+                                    accept="application/pdf"
+                                    required
+                                >
+
+                            </div>
 
                         </div>
 
@@ -1711,10 +1873,14 @@
 
                         <button
                             type="submit"
-                            class="submit-button"
+                            class="submit-btn"
+                            id="submitBtn"
                         >
 
-                            <!-- Send icon -->
+                            <span>
+                                Kirim Pengajuan
+                            </span>
+
 
                             <svg
                                 viewBox="0 0 24 24"
@@ -1724,11 +1890,16 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                             >
-                                <path d="m22 2-7 20-4-9-9-4Z"></path>
-                                <path d="M22 2 11 13"></path>
-                            </svg>
 
-                            Kirim Pengajuan
+                                <path
+                                    d="M5 12h14"
+                                ></path>
+
+                                <path
+                                    d="m13 6 6 6-6 6"
+                                ></path>
+
+                            </svg>
 
                         </button>
 
@@ -1750,35 +1921,25 @@
 
     <footer class="footer">
 
-        <p>
-            © 2026 Dinas Lingkungan Hidup · TALNGATI
-        </p>
+        © 2026 Dinas Lingkungan Hidup · TALNGATI
 
     </footer>
 
 </div>
 
 
-<!-- =============================================================
-     JAVASCRIPT
-============================================================= -->
-
 <script>
 
-    /*
-    |--------------------------------------------------------------------------
-    | DATA PEGAWAI
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       DATA PEGAWAI
+    ========================================================= */
 
     const pegawai = @json($pegawai);
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | ELEMENT
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       ELEMENT
+    ========================================================= */
 
     const searchInput =
         document.getElementById('pegawai_search');
@@ -1802,13 +1963,11 @@
         document.getElementById('unit_kerja');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | TAMPILKAN HASIL PENCARIAN
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       SEARCH PEGAWAI
+    ========================================================= */
 
-    function tampilkanHasil(keyword = '') {
+    function tampilkanPegawai(keyword = '') {
 
         const query =
             keyword.trim().toLowerCase();
@@ -1819,18 +1978,21 @@
             results.innerHTML = '';
 
             return;
+
         }
 
 
-        const cocok =
+        const data =
             pegawai
-                .filter((item) => {
+                .filter(item => {
 
                     const nama =
-                        String(item.name ?? '').toLowerCase();
+                        String(item.name ?? '')
+                            .toLowerCase();
 
                     const nip =
-                        String(item.nip ?? '').toLowerCase();
+                        String(item.nip ?? '')
+                            .toLowerCase();
 
                     return (
                         nama.includes(query) ||
@@ -1844,176 +2006,134 @@
         results.innerHTML = '';
 
 
-        cocok.forEach((item) => {
+        data.forEach(item => {
 
-            const pilihan =
+            const button =
                 document.createElement('button');
 
+            button.type = 'button';
 
-            pilihan.type = 'button';
-
-            pilihan.className = 'search-result';
+            button.className = 'result';
 
 
-            const nama =
+            const name =
                 document.createElement('span');
 
-            nama.className = 'result-name';
+            name.className = 'result-name';
 
-            nama.textContent =
+            name.textContent =
                 item.name;
 
 
-            const detail =
+            const info =
                 document.createElement('span');
 
-            detail.className =
-                'result-detail';
+            info.className = 'result-info';
 
-            detail.textContent =
-                `${item.nip} - ${item.jabatan} - ${item.unit_kerja ?? '-'}`;
+            info.textContent =
+                `${item.nip} · ${item.jabatan} · ${item.unit_kerja ?? '-'}`;
 
 
-            pilihan.append(
-                nama,
-                detail
+            button.appendChild(name);
+
+            button.appendChild(info);
+
+
+            button.addEventListener(
+                'click',
+                function () {
+
+                    pegawaiId.value =
+                        item.id;
+
+                    searchInput.value =
+                        item.name;
+
+                    nipInput.value =
+                        item.nip;
+
+                    namaInput.value =
+                        item.name;
+
+                    jabatanInput.value =
+                        item.jabatan;
+
+                    unitKerjaInput.value =
+                        item.unit_kerja ?? '-';
+
+
+                    results.innerHTML = '';
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Animasi setelah pegawai dipilih
+                    |--------------------------------------------------------------------------
+                    */
+
+                    [
+                        nipInput,
+                        namaInput,
+                        jabatanInput,
+                        unitKerjaInput
+                    ].forEach(input => {
+
+                        input.animate(
+                            [
+                                {
+                                    transform: 'scale(.98)',
+                                    backgroundColor: '#fff1d7'
+                                },
+                                {
+                                    transform: 'scale(1)',
+                                    backgroundColor: '#f1f6f3'
+                                }
+                            ],
+                            {
+                                duration: 450,
+                                easing: 'ease-out'
+                            }
+                        );
+
+                    });
+
+                }
             );
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | PILIH PEGAWAI
-            |--------------------------------------------------------------------------
-            */
-
-            pilihan.addEventListener('click', () => {
-
-                pegawaiId.value =
-                    item.id;
-
-                searchInput.value =
-                    item.name;
-
-                nipInput.value =
-                    item.nip;
-
-                namaInput.value =
-                    item.name;
-
-                jabatanInput.value =
-                    item.jabatan;
-
-                unitKerjaInput.value =
-                    item.unit_kerja ?? '-';
-
-
-                results.innerHTML = '';
-
-
-                /*
-                | Efek setelah pegawai dipilih
-                */
-
-                [
-                    nipInput,
-                    namaInput,
-                    jabatanInput,
-                    unitKerjaInput
-                ].forEach((element) => {
-
-                    element.animate(
-                        [
-                            {
-                                backgroundColor: '#e8f5f1'
-                            },
-                            {
-                                backgroundColor: '#f3f7f5'
-                            }
-                        ],
-                        {
-                            duration: 500,
-                            easing: 'ease-out'
-                        }
-                    );
-
-                });
-
-            });
-
-
-            results.appendChild(pilihan);
+            results.appendChild(button);
 
         });
 
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | SEARCH EVENT
-    |--------------------------------------------------------------------------
-    */
-
     searchInput.addEventListener(
         'input',
-        () => tampilkanHasil(searchInput.value)
+        function () {
+
+            tampilkanPegawai(
+                this.value
+            );
+
+        }
     );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | CLOSE SEARCH WHEN CLICK OUTSIDE
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       CLICK OUTSIDE SEARCH
+    ========================================================= */
 
-    document.addEventListener('click', (event) => {
+    document.addEventListener(
+        'click',
+        function (event) {
 
-        if (
-            !searchInput.contains(event.target) &&
-            !results.contains(event.target)
-        ) {
+            if (
+                !searchInput.contains(event.target) &&
+                !results.contains(event.target)
+            ) {
 
-            results.innerHTML = '';
-
-        }
-
-    });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | LOGIC TANGGAL BERDASARKAN KATEGORI
-    |--------------------------------------------------------------------------
-    */
-
-    const kategoriSelect =
-        document.getElementById('kategori_cuti');
-
-    const tglMulaiInput =
-        document.getElementById('tanggal_mulai');
-
-    const today =
-        new Date()
-            .toISOString()
-            .split('T')[0];
-
-
-    kategoriSelect.addEventListener(
-        'change',
-        function () {
-
-            if (this.value === 'Cuti Tahunan') {
-
-                tglMulaiInput.setAttribute(
-                    'min',
-                    today
-                );
-
-            } else {
-
-                tglMulaiInput.removeAttribute(
-                    'min'
-                );
+                results.innerHTML = '';
 
             }
 
@@ -2021,26 +2141,25 @@
     );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | CEGAH TANGGAL SELESAI SEBELUM TANGGAL MULAI
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       TANGGAL
+    ========================================================= */
 
-    const tglSelesaiInput =
+    const tanggalMulai =
+        document.getElementById('tanggal_mulai');
+
+    const tanggalSelesai =
         document.getElementById('tanggal_selesai');
 
 
-    tglMulaiInput.addEventListener(
+    tanggalMulai.addEventListener(
         'change',
         function () {
 
             if (this.value) {
 
-                tglSelesaiInput.setAttribute(
-                    'min',
-                    this.value
-                );
+                tanggalSelesai.min =
+                    this.value;
 
             }
 
@@ -2048,17 +2167,15 @@
     );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | VALIDASI FILE PDF
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       VALIDASI FILE
+    ========================================================= */
 
-    const lampiranInput =
+    const lampiran =
         document.getElementById('lampiran');
 
 
-    lampiranInput.addEventListener(
+    lampiran.addEventListener(
         'change',
         function () {
 
@@ -2075,7 +2192,10 @@
                 2 * 1024 * 1024;
 
 
-            if (file.type !== 'application/pdf') {
+            if (
+                file.type !==
+                'application/pdf'
+            ) {
 
                 alert(
                     'Lampiran harus berupa file PDF.'
@@ -2084,10 +2204,13 @@
                 this.value = '';
 
                 return;
+
             }
 
 
-            if (file.size > maxSize) {
+            if (
+                file.size > maxSize
+            ) {
 
                 alert(
                     'Ukuran file maksimal 2 MB.'
@@ -2096,34 +2219,33 @@
                 this.value = '';
 
                 return;
+
             }
 
         }
     );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | ANIMASI BUTTON SAAT SUBMIT
-    |--------------------------------------------------------------------------
-    */
+    /* =========================================================
+       SUBMIT ANIMATION
+    ========================================================= */
 
     const form =
         document.querySelector('form');
 
-    const submitButton =
-        document.querySelector('.submit-button');
+    const submitBtn =
+        document.getElementById('submitBtn');
 
 
     form.addEventListener(
         'submit',
         function () {
 
-            submitButton.style.opacity = '.75';
+            submitBtn.disabled = true;
 
-            submitButton.style.pointerEvents = 'none';
+            submitBtn.style.opacity = '.78';
 
-            submitButton.innerHTML = `
+            submitBtn.innerHTML = `
 
                 <svg
                     viewBox="0 0 24 24"
@@ -2136,18 +2258,23 @@
                         animation:spin .8s linear infinite;
                     "
                 >
+
                     <circle
                         cx="12"
                         cy="12"
                         r="9"
-                        opacity=".3"
+                        opacity=".25"
                     ></circle>
 
-                    <path d="M21 12a9 9 0 0 1-9 9"></path>
+                    <path
+                        d="M21 12a9 9 0 0 1-9 9"
+                    ></path>
 
                 </svg>
 
-                Mengirim Pengajuan...
+                <span>
+                    Mengirim Pengajuan...
+                </span>
 
             `;
 
@@ -2155,7 +2282,6 @@
     );
 
 </script>
-
 
 </body>
 
